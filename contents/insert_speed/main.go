@@ -1,4 +1,4 @@
-package insert_speed_1conn
+package insert_speed
 
 import (
 	"fmt"
@@ -19,9 +19,7 @@ func runRDB(totalCnt, rps int) {
 	// 호출
 	start := time.Now()
 	status := tests.LoopFunction(db, totalCnt, rps, createRDB)
-	var cnt int64
-	db.Model(&User{}).Count(&cnt)
-	fmt.Println("[ 완료 ]\n▶️ 동작 시간 : ", time.Since(start), "\n▶️ 성공 : ", status.Success, "\n▶️ 실패 : ", status.Failed, "\n▶️ 실제 데이터 수 : ", cnt)
+	fmt.Println("[ 완료 ]\n▶️ 동작 시간 : ", time.Since(start), "\n▶️ 성공 : ", status.Success, "\n▶️ 실패 : ", status.Failed)
 }
 
 // createRDB 새로운 데이터 생성
@@ -34,16 +32,15 @@ func createRDB(arg interface{}) error {
 }
 
 func Run() {
-	totalCnt := 100000
+	totalCnt := 1000000
 	switch os.Args[1] {
 	case "mongo":
-		// mongo : 25000
 		runMongo(totalCnt, 0)
 	case "sqlite":
-		runRDB(totalCnt, 1000)
+		runRDB(totalCnt, 10000)
 	case "mysql":
-		runRDB(totalCnt, 500)
+		runRDB(totalCnt, 10000)
 	case "postgres":
-		runRDB(totalCnt, 250)
+		runRDB(totalCnt, 10000)
 	}
 }

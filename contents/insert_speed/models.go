@@ -1,4 +1,4 @@
-package insert_speed_1conn
+package insert_speed
 
 import (
 	"gorm.io/gorm"

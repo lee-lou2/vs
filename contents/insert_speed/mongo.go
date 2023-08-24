@@ -1,4 +1,4 @@
-package insert_speed_1conn
+package insert_speed
 
 import (
 	"context"
@@ -16,6 +16,7 @@ import (
 func runMongo(totalCnt, rps int) {
 	// MongoDB에 연결
 	clientOptions := options.Client().ApplyURI("mongodb://mongo:mongo@localhost:27017")
+	clientOptions.SetMaxPoolSize(100)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
@@ -40,11 +41,7 @@ func runMongo(totalCnt, rps int) {
 	// 호출
 	start := time.Now()
 	status := tests.LoopFunction(collection, totalCnt, rps, createMongo)
-	cnt, err := collection.CountDocuments(context.TODO(), bson.D{})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("[ 완료 ]\n▶️ 동작 시간 : ", time.Since(start), "\n▶️ 성공 : ", status.Success, "\n▶️ 실패 : ", status.Failed, "\n▶️ 실제 데이터 수 : ", cnt)
+	fmt.Println("[ 완료 ]\n▶️ 동작 시간 : ", time.Since(start), "\n▶️ 성공 : ", status.Success, "\n▶️ 실패 : ", status.Failed)
 }
 
 func createMongo(arg interface{}) error {

@@ -39,5 +39,13 @@ func GetDB(dbName string) *gorm.DB {
 	if err != nil {
 		panic(err)
 	}
+	sqlDB, err := db.DB()
+	if err != nil {
+		panic("failed to get SQL database")
+	}
+	// SetMaxIdleConns는 커넥션 풀에서 유지할 최대 공유 연결 수를 설정합니다.
+	sqlDB.SetMaxIdleConns(10)
+	// SetMaxOpenConns는 데이터베이스에 열릴 수 있는 최대 연결 수를 설정합니다.
+	sqlDB.SetMaxOpenConns(100)
 	return db
 }
