@@ -1,3 +1,10 @@
 test.db
 .data
 .idea
+
+node_modules
+package-lock.json
+
+venv
+db.sqlite3
+__pycache__

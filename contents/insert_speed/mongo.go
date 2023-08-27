@@ -40,11 +40,12 @@ func runMongo(totalCnt, rps int) {
 
 	// 호출
 	start := time.Now()
-	status := tests.LoopFunction(collection, totalCnt, rps, createMongo)
+	status := tests.LoopFunction(collection, totalCnt, rps, selectMongo)
 	fmt.Println("[ 완료 ]\n▶️ 동작 시간 : ", time.Since(start), "\n▶️ 성공 : ", status.Success, "\n▶️ 실패 : ", status.Failed)
 }
 
-func createMongo(arg interface{}) error {
+// selectMongo 데이터 조회
+func selectMongo(arg interface{}) error {
 	collection := arg.(*mongo.Collection)
 	user := User{
 		Name: utils.RandomString(30),
